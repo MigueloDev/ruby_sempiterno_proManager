@@ -1,0 +1,162 @@
+<% unless user_signed_in? %>
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto text-center">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">Bienvenido a ProManager</h1>
+      <p class="text-gray-600 mb-8">Sistema de gestión de proyectos</p>
+      <div class="space-x-4">
+        <%= link_to "Iniciar sesión", new_user_session_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700" %>
+        <%= link_to "Registrarse", new_user_registration_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Dashboard - ProManager</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Total Proyectos</p>
+            <p class="text-2xl font-semibold text-gray-900"><%= @total_projects %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-green-100 text-green-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Proyectos Activos</p>
+            <p class="text-2xl font-semibold text-gray-900"><%= @active_projects %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Tareas Pendientes</p>
+            <p class="text-2xl font-semibold text-gray-900"><%= @pending_tasks %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-red-100 text-red-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Tareas Vencidas</p>
+            <p class="text-2xl font-semibold text-gray-900"><%= @overdue_tasks %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900">Proyectos Recientes</h3>
+        </div>
+        <div class="p-6">
+          <% if @recent_projects.any? %>
+            <div class="space-y-4">
+              <% @recent_projects.each do |project| %>
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div>
+                    <h4 class="font-medium text-gray-900"><%= link_to project.name, project, class: "hover:text-blue-600" %></h4>
+                    <p class="text-sm text-gray-600"><%= project.tasks_count %> tareas</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= project.status == 'active' ? 'bg-green-100 text-green-800' :
+                          project.status == 'completed' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800' %>">
+                      <%= project.status.humanize %>
+                    </span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 text-center py-4">No hay proyectos recientes</p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900">Estadísticas de Usuarios</h3>
+        </div>
+        <div class="p-6">
+          <% if @users_stats.any? %>
+            <div class="space-y-4">
+              <% @users_stats.each do |stats| %>
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div>
+                    <h4 class="font-medium text-gray-900"><%= stats[:user].name %></h4>
+                    <p class="text-sm text-gray-600"><%= stats[:total_tasks] %> tareas asignadas</p>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-sm font-medium text-gray-900"><%= stats[:completion_percentage] %>%</div>
+                    <div class="text-xs text-gray-500"><%= stats[:completed_tasks] %> completadas</div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 text-center py-4">No hay usuarios con tareas</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900">Acciones Rápidas</h3>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <%= link_to new_project_path, class: "flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Nuevo Proyecto
+          <% end %>
+
+          <%= link_to users_path, class: "flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+            </svg>
+            Ver Usuarios
+          <% end %>
+
+          <%= link_to projects_path, class: "flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            Ver Proyectos
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
