@@ -4,5 +4,6 @@ FactoryBot.define do
     sequence(:email) { |n| "usuario#{n}@ejemplo.com" }
     password { "password123" }
     password_confirmation { "password123" }
+    encrypted_password { Devise::Encryptor.digest(User, "password123") }
   end
 end
