@@ -40,3 +40,19 @@ ProManager es una plataforma completa de gestión de proyectos desarrollada en R
 - **JavaScript**: Stimulus (incluido en Rails)
 - **Contenedorización**: Docker
 **ProManager** - Gestión de proyectos simplificada y eficiente.
+
+
+# Instalacion
+## Configuracion
+- docker-compose up --build
+- docker-compose exec app bundle install
+- docker-compose exec app rails db:create db:migrate
+
+## Comandos utiles
+- docker-compose exec app bash
+
+## Pruebas
+- docker-compose exec app rspec
+
+## Ver Logs
+docker-compose logs app
