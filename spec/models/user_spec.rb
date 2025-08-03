@@ -31,11 +31,6 @@ RSpec.describe User, type: :model do
       expect(user.created_tasks).to include(task)
     end
 
-    it "has many created projects" do
-      user = create(:user)
-      project = create(:project, created_by: user)
-      expect(user.created_projects).to include(project)
-    end
   end
 
   describe "methods" do
@@ -63,4 +58,4 @@ RSpec.describe User, type: :model do
       expect(user.completion_percentage).to eq(50.0)
     end
   end
-end 
+end

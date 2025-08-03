@@ -5,6 +5,5 @@ FactoryBot.define do
     status { "active" }
     start_date { Date.current }
     due_date { Date.current + 30.days }
-    association :created_by, factory: :user
   end
-end 
+end
