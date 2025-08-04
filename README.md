@@ -52,7 +52,8 @@ ProManager es una plataforma completa de gestión de proyectos desarrollada en R
 - docker-compose exec app bash
 
 ## Pruebas
-- docker-compose exec app rspec
+- docker-compose exec app rails db:create db:migrate RAILS_ENV=test
+- docker-compose exec app env RAILS_ENV=test rspec
 
 ## Ver Logs
 docker-compose logs app
